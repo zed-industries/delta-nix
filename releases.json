@@ -1,1 +1,16 @@
-{}
+{
+  "nightly": {
+    "tag": "v0.17.0",
+    "version": "0.17.0",
+    "systems": {
+      "x86_64-linux": {
+        "filename": "delta-linux-x86_64.tar.gz",
+        "hash": "sha256-+AUZre1HCN2hzmF95jY0Xs0n4Fd/yPnfCTG+QGBt6MU="
+      },
+      "aarch64-linux": {
+        "filename": "delta-linux-aarch64.tar.gz",
+        "hash": "sha256-5n1yvpL9WggRJaXNbBkZtrBlBBcRIjeOhafXm7jKsDE="
+      }
+    }
+  }
+}
