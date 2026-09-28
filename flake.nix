@@ -12,7 +12,8 @@
       ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       releases = builtins.fromJSON (builtins.readFile ./releases.json);
-      release = releases.nightly or null;
+      # Pins published before the stable channel was renamed use `nightly`.
+      release = releases.stable or releases.nightly or null;
       hasRelease = system: release != null && release.systems ? ${system};
 
       runtimeLibsFor =
