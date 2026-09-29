@@ -102,11 +102,23 @@
               --prefix LD_LIBRARY_PATH : "$appDir/lib:${runtimeLibraryPath}" \
               --set DELTA_UPDATE_EXPLANATION \
                 "Delta is managed by Nix; update your flake input to install a newer release."
+            if [ -x "$appDir/bin/delta-app" ]; then
+              makeWrapper "$appDir/bin/delta-app" "$out/bin/delta-app" \
+                --prefix LD_LIBRARY_PATH : "$appDir/lib:${runtimeLibraryPath}" \
+                --set DELTA_UPDATE_EXPLANATION \
+                  "Delta is managed by Nix; update your flake input to install a newer release."
+            fi
 
             cp -a "$appDir/share/icons" "$out/share/icons"
             for desktopFile in "$appDir"/share/applications/*.desktop; do
-              substitute "$desktopFile" "$out/share/applications/$(basename "$desktopFile")" \
-                --replace-fail "Exec=delta " "Exec=$out/bin/delta "
+              output="$out/share/applications/$(basename "$desktopFile")"
+              if [ -x "$appDir/bin/delta-app" ]; then
+                substitute "$desktopFile" "$output" \
+                  --replace-fail "Exec=delta-app " "Exec=$out/bin/delta-app "
+              else
+                substitute "$desktopFile" "$output" \
+                  --replace-fail "Exec=delta " "Exec=$out/bin/delta "
+              fi
             done
 
             runHook postInstall
@@ -119,6 +131,9 @@
             ${pkgs.desktop-file-utils}/bin/desktop-file-validate \
               "$out/share/applications/"*.desktop
             grep -F "DELTA_UPDATE_EXPLANATION" "$out/bin/delta"
+            if [ -x "$out/bin/delta-app" ]; then
+              grep -F "DELTA_UPDATE_EXPLANATION" "$out/bin/delta-app"
+            fi
             find "$out/opt/delta" -type f \( -perm -0100 -o -name '*.so' -o -name '*.so.*' \) -print0 |
             while IFS= read -r -d "" elf; do
               if patchelf --print-rpath "$elf" >/dev/null 2>&1; then
