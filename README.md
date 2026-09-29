@@ -33,3 +33,8 @@ inputs.delta.url = "github:zed-industries/delta-nix/v0.17.0";
 ```
 
 A release tag pins both the package definition and the binary version.
+
+The package exposes `delta` as the CLI. For paired-binary releases, the
+desktop entry launches the separately wrapped `delta-app`; both receive the
+Nix runtime library paths and have Delta's built-in updater disabled. Older
+pinned releases with a single executable continue to use that executable.
