@@ -35,6 +35,9 @@ inputs.delta.url = "github:zed-industries/delta-nix/v0.17.0";
 A release tag pins both the package definition and the binary version.
 
 The package exposes `delta` as the CLI. For paired-binary releases, the
-desktop entry launches the separately wrapped `delta-app`; both receive the
-Nix runtime library paths and have Delta's built-in updater disabled. Older
-pinned releases with a single executable continue to use that executable.
+desktop entry uses the wrapped CLI as `delta open %U` so deep-link URLs
+reach the application, including for legacy entries that launched `delta-app`
+directly. The separate app wrapper remains available; both wrappers receive
+the Nix runtime library paths and have Delta's built-in updater disabled.
+Older pinned releases with a single executable retain their original desktop
+arguments (such as `cli open %U`).

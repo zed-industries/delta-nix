@@ -110,11 +110,13 @@
             fi
 
             cp -a "$appDir/share/icons" "$out/share/icons"
+            # Route legacy app entries through the CLI so URLs reach the app.
+            # CLI entries already carry the arguments appropriate to their release.
             for desktopFile in "$appDir"/share/applications/*.desktop; do
               output="$out/share/applications/$(basename "$desktopFile")"
-              if [ -x "$appDir/bin/delta-app" ]; then
+              if grep -q '^Exec=delta-app ' "$desktopFile"; then
                 substitute "$desktopFile" "$output" \
-                  --replace-fail "Exec=delta-app " "Exec=$out/bin/delta-app "
+                  --replace-fail "Exec=delta-app " "Exec=$out/bin/delta open "
               else
                 substitute "$desktopFile" "$output" \
                   --replace-fail "Exec=delta " "Exec=$out/bin/delta "
@@ -133,6 +135,9 @@
             grep -F "DELTA_UPDATE_EXPLANATION" "$out/bin/delta"
             if [ -x "$out/bin/delta-app" ]; then
               grep -F "DELTA_UPDATE_EXPLANATION" "$out/bin/delta-app"
+              for desktopFile in "$out"/share/applications/*.desktop; do
+                grep -Fx "Exec=$out/bin/delta open %U" "$desktopFile"
+              done
             fi
             find "$out/opt/delta" -type f \( -perm -0100 -o -name '*.so' -o -name '*.so.*' \) -print0 |
             while IFS= read -r -d "" elf; do
