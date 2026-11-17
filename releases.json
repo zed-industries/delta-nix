@@ -1,15 +1,15 @@
 {
   "stable": {
-    "tag": "v0.24.0",
-    "version": "0.24.0",
+    "tag": "v0.27.1",
+    "version": "0.27.1",
     "systems": {
       "x86_64-linux": {
         "filename": "delta-linux-x86_64.tar.gz",
-        "hash": "sha256-nWmR0N0HG/mvxmLCGInfBqdFWZ678CqNUSq0EIkE71o="
+        "hash": "sha256-/kBXce6UVyb9Kxq6CZwOTMc0dNNwXZtBwpYXypuw5AU="
       },
       "aarch64-linux": {
         "filename": "delta-linux-aarch64.tar.gz",
-        "hash": "sha256-hAlrlULIGkt7uBITDT2zktrCgGuhxP+MyeopC3jTVEg="
+        "hash": "sha256-n1YmpmcBv1LWZ5WtUv2mgQj0y7UfyeWL6uVp2ITLgFQ="
       }
     }
   }
